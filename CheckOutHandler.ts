@@ -3,15 +3,14 @@
 // ============================================
 // Handles check-out form submissions and updates Items sheet
 
-function handleCheckOut(e: GoogleAppsScript.Events.SheetsOnFormSubmit, itemsSheet: GoogleAppsScript.Spreadsheet.Sheet): void {
-    // TODO: validate id and fail form submission if an id is
-    // invalid... (?)
-
+function handleCheckOut(
+    e: GoogleAppsScript.Events.SheetsOnFormSubmit,
+    itemsSheet: GoogleAppsScript.Spreadsheet.Sheet,
+): void {
     const userEmail = e.values[CHECKOUT_FORM.USER_EMAIL];
     const userName = e.values[CHECKOUT_FORM.USER_NAME];
     const returnDate = e.values[CHECKOUT_FORM.RETURN_DATE];
     const requestedCheckoutItemIDListString = e.values[CHECKOUT_FORM.ITEM_IDS];
-    // TODO: split on whitespace
     const requestedCheckoutItemIDs = requestedCheckoutItemIDListString
         .trim()
         .split(",")
