@@ -17,8 +17,13 @@ function handleCheckInSubmission(
         Logger.log(
             `[handleCheckInSubmission] Updating item row to checked in: ${itemRow}`,
         );
-        const statusCell = itemsSheet.getRange(itemRow, ITEMS_SHEET.STATUS_COL);
-        statusCell.setValue(ITEMS_SHEET.ITEM_CHECKED_IN_TEXT);
+        const statusCell = itemsSheet.getRange(
+            itemRow,
+            ITEMS_SHEET.STATUS_COL,
+            1,
+            ITEMS_SHEET.CHECKIN_UPDATE_NUM_COLS,
+        );
+        statusCell.setValues([[ITEMS_SHEET.ITEM_CHECKED_IN_TEXT, "", ""]]);
     }
 }
 

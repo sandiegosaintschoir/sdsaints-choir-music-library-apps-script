@@ -12,6 +12,7 @@ const ITEMS_SHEET = {
     HEADER_ROW: 1,
     UNIQUE_ID_COL: 1,
     STATUS_COL: 3,
+    CHECKIN_UPDATE_NUM_COLS: 3,
     ITEM_CHECKED_OUT_TEXT: "Checked Out",
     ITEM_CHECKED_IN_TEXT: "Checked In",
     ITEM_NEWLY_CREATED_TEXT: "Newly Created",
