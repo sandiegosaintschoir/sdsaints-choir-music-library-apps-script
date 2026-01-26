@@ -4,6 +4,7 @@ function handleCheckInSubmission(
 ) {
     if (e.range.getSheet().getName() !== SHEET_NAMES.CHECKIN_RESPONSES) return;
 
+    const timestamp = e.values[CHECKIN_FORM.TIMESTAMP_INDEX];
     const itemIdsString = e.values[CHECKIN_FORM.ITEM_IDS_INDEX];
     const itemIds = parseItemIds(itemIdsString);
     const itemIdSet = new Set(itemIds);
@@ -23,7 +24,9 @@ function handleCheckInSubmission(
             1,
             ITEMS_SHEET.CHECKIN_UPDATE_NUM_COLS,
         );
-        statusCell.setValues([[ITEMS_SHEET.ITEM_CHECKED_IN_TEXT, "", ""]]);
+        statusCell.setValues([
+            [ITEMS_SHEET.ITEM_CHECKED_IN_TEXT, timestamp, "", ""],
+        ]);
     }
 }
 
@@ -33,6 +36,7 @@ function handleCheckOutSubmission(
 ) {
     if (e.range.getSheet().getName() !== SHEET_NAMES.CHECKOUT_RESPONSES) return;
 
+    const timestamp = e.values[CHECKOUT_FORM.TIMESTAMP_INDEX];
     const itemIdsString = e.values[CHECKOUT_FORM.ITEM_IDS_INDEX];
     const itemIds = parseItemIds(itemIdsString);
     const itemIdSet = new Set(itemIds);
@@ -52,10 +56,10 @@ function handleCheckOutSubmission(
             itemRow,
             ITEMS_SHEET.STATUS_COL,
             1,
-            3,
+            ITEMS_SHEET.CHECKIN_UPDATE_NUM_COLS,
         );
         statusRange.setValues([
-            [ITEMS_SHEET.ITEM_CHECKED_OUT_TEXT, userName, userEmail],
+            [ITEMS_SHEET.ITEM_CHECKED_OUT_TEXT, timestamp, userName, userEmail],
         ]);
     }
 }
@@ -91,3 +95,18 @@ function getRequestedItemRows(
     }
     return requestedRowNumbers;
 }
+
+// TODO: If we decide to normalize the date format, we could do it here,
+// but since google forms do not include a timezone in the timestamp, we
+// want to make sure we interpret the timestamp string without a timezone.
+// When we use the Date class, I believe it will interpret the timestamp as
+// being in the UTC timezone which could lead to issues. Instead we should infer
+// that the timestamp from the google form is in the correct timezone and
+// use it directly.
+// function formatDate(timestamp: string): string {
+//     const date = new Date(timestamp);
+//     const month = String(date.getMonth() + 1).padStart(2, "0");
+//     const day = String(date.getDate()).padStart(2, "0");
+//     const year = date.getFullYear();
+//     return `${month}/${day}/${year}`; // Format: mm/dd/yyyy
+// }
